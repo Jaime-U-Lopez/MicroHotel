@@ -1,9 +1,12 @@
 package com.example.reservas.Repository;
 
+import com.example.reservas.Model.Cliente;
+import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Model.Reserva;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.*;
 
 @Repository
@@ -25,7 +28,7 @@ public class ReservaImple  implements ReservasDao {
     }
 
     @Override
-    public boolean delete(Long idReserva) {
+    public boolean delete(Integer idReserva) {
 
         boolean existe=  this.reservaRepositorio.existsById(idReserva);
         if(existe){
@@ -44,13 +47,26 @@ public class ReservaImple  implements ReservasDao {
     }
 
     @Override
-    public Reserva reserva(Long idReserva) {
+    public Reserva reserva(Integer idReserva) {
         Optional<Reserva>  reserva=  this.reservaRepositorio.findById(idReserva);
         return reserva.get();
     }
 
-    @Override
-    public List<Reserva> QueryConsultaPorFechaYHabitacion(String tipoHabitacion, String fecha) {
-        return this.reservaRepositorio.findByTipoFechaYHabitacion(tipoHabitacion,fecha);
+
+
+    public List<Habitacion> FindbyDateTypeRoom(Date fecha , String TipoHabitacion){
+        return reservaRepositorio.findByDateType(fecha, TipoHabitacion);
+
     }
+
+    public List<Habitacion> findByDateDisponibilidad(Date fecha){
+        return this.reservaRepositorio.findByDateDisponibilidad(fecha);
+    }
+
+
+        public List<Cliente>  ClientesConReserva(Integer cedula){
+        return this.reservaRepositorio.clienteConReserva(cedula);
+        }
+
+
 }

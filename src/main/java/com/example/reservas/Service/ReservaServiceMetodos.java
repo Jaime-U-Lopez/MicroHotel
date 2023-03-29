@@ -7,12 +7,12 @@ import java.util.List;
 public interface ReservaServiceMetodos {
 
 
-    String create(Reserva reserva);
-    boolean delete(Long idReserva);
+    Reserva create(Reserva reserva);
+    boolean delete(Integer idReserva);
     List<Reserva> reservaAll();
-    Reserva reserva(Long idReserva);
-    List<Reserva>  queryConsultaPorFechaYHabitacion( String tipoHabitacion, String fecha );
+    Reserva reserva(Integer idReserva);
 
-    Double totalApagar(int valorBaseHabitacion);
+
+
 
 }

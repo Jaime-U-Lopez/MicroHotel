@@ -1,7 +1,5 @@
 package com.example.reservas.Controllers;
 
-
-
 import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Service.HabitacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +23,10 @@ public class HabitacionController {
    public Habitacion habitacion(@PathVariable int idHabitacion){
     return  this.habitacionService.habitacion(idHabitacion);
 }
-    @GetMapping("habitaciones/{tipo}")
-    public List<Habitacion> habitacionPorTipo(@PathVariable String tipo){
+    @GetMapping("habitaciones/")
+    public List<Habitacion> habitacionPorTipo(@RequestParam("tipo") String tipo){
         return  this.habitacionService.habitacionPorTipo(tipo);
     }
-
-
 
 
     @PostMapping("habitaciones")

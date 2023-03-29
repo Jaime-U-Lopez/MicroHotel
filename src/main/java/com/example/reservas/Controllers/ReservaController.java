@@ -1,14 +1,16 @@
 package com.example.reservas.Controllers;
 
 
+import com.example.reservas.Model.Cliente;
+import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Model.Reserva;
 import com.example.reservas.Service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,49 +22,57 @@ public class ReservaController {
     private ReservaService reservaService;
 
     @GetMapping("reservas")
-    public List<Reserva> reservasAll(){
+    public List<Reserva> reservasAll() {
         return this.reservaService.reservaAll();
     }
 
     @GetMapping("reservas/{idReserva}")
-    public Reserva reserva(@PathVariable Long idReserva){
-        return  this.reservaService.reserva(idReserva);
+    public Reserva reserva(@PathVariable Integer idReserva) {
+
+
+        return this.reservaService.reserva(idReserva);
     }
+
+
     @PostMapping("reservas")
-    public ResponseEntity<Reserva>  createReserva(@RequestBody Reserva reserva){
+    public ResponseEntity<Reserva> createReserva(@RequestBody Reserva reserva) {
 
-        Optional<String> validacionReserva = Optional.ofNullable(reservaService.create(reserva));
+        Optional<Reserva> validacionReserva = Optional.of(reservaService.create(reserva));
         if (validacionReserva != null) {
-            return new ResponseEntity("Created Reserva!", HttpStatus.CREATED);
-
+            return new ResponseEntity(validacionReserva.get(), HttpStatus.CREATED);
         }
         return new ResponseEntity("Reserva not created!", HttpStatus.BAD_REQUEST);
 
+    }
 
 
+    @GetMapping("reservas/")
+    public List<Cliente> ClientesConReserva(@RequestParam ("clienteReserva") Integer  clienteReserva ){
+        return this.reservaService.ClientesConReserva(clienteReserva);
 
     }
+
+
     @DeleteMapping("reservas/{idReserva}")
-    public boolean delete(@PathVariable Long idReserva){
+    public boolean delete(@PathVariable Integer idReserva) {
+
+
         return this.reservaService.delete(idReserva);
     }
 
-    @GetMapping("reservas/{tipo-habitacion}/{fecha}")
-    public List<Reserva> QueryPorFechaYHabitacionTipo(@PathVariable String tipo_habitacion, @PathVariable String fecha){
-        return this.reservaService.queryConsultaPorFechaYHabitacion(tipo_habitacion,  fecha);
-    }
 
-    @PutMapping("reservas")
-    public void update(@RequestBody Reserva reserva){
-
+    @GetMapping("reservas/")
+    public List<Habitacion> ConsultaPorFechaDisponibilidad(@RequestParam("fecha") String fecha) {
+        Date fechault = Date.valueOf(fecha);
+        return this.reservaService.findByDateDisponibilidad(fechault);
     }
 
 
-
-
-
-
-
-
+    //por fecha
+    @GetMapping("reservas/{fechaReserva}/")
+    public List<Habitacion> findbyDateType(@PathVariable String fechaReserva, @RequestParam("tipoHabitacion") String tipoHabitacion) {
+        Date fechault = Date.valueOf(fechaReserva);
+        return this.reservaService.FindbyDateTypeRoom(fechault, tipoHabitacion);
+    }
 
 }

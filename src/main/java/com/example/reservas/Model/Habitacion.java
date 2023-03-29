@@ -10,34 +10,29 @@ import java.util.List;
 public class Habitacion   implements Serializable {
 
 
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name="numero_habitacion")
-    private int numero_habitacion;
-
-
-    @Column(name="tipo_Habitacion")
+    @Column(name="numero_habitacion", nullable = false)
+    private Integer numero_habitacion;
+    @Column(name="tipo_Habitacion", nullable = false)
     private String tipoHabitacion;
-    @Column(name="precio")
-    private int precio;
-
-
-
-    @OneToMany(mappedBy = "habitacion")
-    private List<Reserva> reservas;
-
+    @Column(name="precio", nullable = false)
+    private Double precio;
 
     public Habitacion(){};
 
-    public Habitacion(int numero_habitacion, String tipoHabitacion, int precio) {
+    public Habitacion(Integer numero_habitacion) {
+        this.numero_habitacion = numero_habitacion;
+    }
+
+    public Habitacion(Integer numero_habitacion, String tipoHabitacion, Double precio) {
         this.numero_habitacion = numero_habitacion;
         this.tipoHabitacion = tipoHabitacion;
         this.precio = precio;
     }
 
-    public int getNumero() {
+    public Integer getNumero_habitacion() {
         return numero_habitacion;
     }
 
@@ -45,7 +40,7 @@ public class Habitacion   implements Serializable {
         return tipoHabitacion;
     }
 
-    public int getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 

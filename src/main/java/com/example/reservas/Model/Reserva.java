@@ -1,6 +1,8 @@
 package com.example.reservas.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
@@ -13,21 +15,21 @@ public class Reserva  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_reserva", nullable = false )
-    private Long codigo_reserva;
+    @Column(name = "codigo_reserva", nullable = false )
+    private Integer codigo_reserva;
 
 
     @Column(name = "fecha_Reserva", nullable = false)
     private Date fecha_Reserva;
 
-
-    @JoinColumn(name = "cliente")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "cedula")
+    @JsonIgnoreProperties("reserva")
     private Cliente cliente;
-
 
     @ManyToOne
     @JoinColumn(name = "habitacion")
+    @JsonIgnoreProperties("reserva")
     private Habitacion habitacion ;
 
 
@@ -35,29 +37,18 @@ public class Reserva  implements Serializable {
     private Double total_pagar;
     public Reserva(){};
 
-    public Reserva(Long codigo_reserva, Date fecha_Reserva, Cliente cliente, Habitacion habitacion, Double total_pagar) {
-        this.codigo_reserva = codigo_reserva;
+    public Reserva( Date fecha_Reserva, Cliente cliente, Habitacion habitacion) {
         this.fecha_Reserva = fecha_Reserva;
         this.cliente = cliente;
         this.habitacion = habitacion;
-        this.total_pagar = total_pagar;
+
     }
 
     public Cliente getCliente() {
         return cliente;
     }
 
-    public Long getCodigo_reserva() {
-        return codigo_reserva;
-    }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public void setHabitacion(Habitacion habitacion) {
-        this.habitacion = habitacion;
-    }
 
      public Date getFecha_Reserva() {
         return fecha_Reserva;
@@ -65,20 +56,15 @@ public class Reserva  implements Serializable {
 
 
 
-public Habitacion getHabitacion() {
+    public Habitacion getHabitacion() {
       return habitacion;
  }
 
-    public double getTotal_pagar() {
-        return total_pagar;
+    public Integer getCodigo_reserva() {
+        return codigo_reserva;
     }
 
-
-
-    public void setFecha_Reserva(Date fecha_Reserva) {
-        this.fecha_Reserva = fecha_Reserva;
+    public Double getTotal_pagar() {
+        return getHabitacion().getPrecio();
     }
-
-
-
 }

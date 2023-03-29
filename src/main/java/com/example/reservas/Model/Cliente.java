@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="clientes")
@@ -15,68 +15,52 @@ public class Cliente implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_cliente" , nullable = false )
-    private int id_cliente;
-    @Column(name="nombre")
+    @Column(name="cedula", nullable = false)
+    private Integer cedula;
+
+    @Column(name="nombre", nullable = false)
     private String nombre;
-    @Column(name="apellido")
+    @Column(name="apellido" , nullable = false)
     private String apellido;
-    @Column(name="cedula")
-    private Long cedula;
-    @Column(name="direccion")
+    @Column(name="direccion", nullable = false)
     private String direccion;
-    @Column(name="edad")
+    @Column(name="edad", nullable = false)
     private int edad;
 
-
-    @Column(name="correo_electronico")
+    @Column(name="correo_electronico", nullable = false)
     private String correo_electronico;
 
-
-    @OneToMany(mappedBy = "cliente")
-    private List<Reserva> Reservas ;
-
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cliente")
+    @JsonIgnoreProperties("cliente")
+    private List<Reserva> reserva;
 
     public Cliente(){};
 
-    public Cliente(int id_cliente) {
-
-        this.id_cliente = id_cliente +2;
+    public Cliente(Integer cedula) {
+        this.cedula = cedula;
     }
 
-    public Cliente(String nombre, String apellido, Long cedula, String direccion, int edad, String correo_electronico) {
+    public Cliente(Integer cedula, String nombre, String apellido, String direccion, int edad, String correo_electronico) {
+        this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.cedula = cedula;
         this.direccion = direccion;
         this.edad = edad;
         this.correo_electronico = correo_electronico;
-        this.getId_Cliente();
     }
 
-    public int getId_Cliente() {
-        return id_cliente;
+    public int getCedula() {
+        return cedula;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "cedula=" + cedula +
-                ", direccion='" + direccion + '\'' +
-                '}';
-    }
+
 
     public String getApellido() {
         return apellido;
-    }
-
-    public Long getCedula() {
-        return cedula;
     }
 
     public String getDireccion() {

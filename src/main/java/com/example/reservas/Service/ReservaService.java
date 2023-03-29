@@ -1,6 +1,9 @@
 package com.example.reservas.Service;
 
+import com.example.reservas.Exception.ClienteInvalidoException;
+import com.example.reservas.Exception.ReservaInvalidoException;
 import com.example.reservas.Model.Cliente;
+import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Model.Reserva;
 import com.example.reservas.Repository.ClienteImple;
 import com.example.reservas.Repository.ReservaImple;
@@ -32,73 +35,101 @@ public class ReservaService  implements ReservaServiceMetodos{
         this.clienteImple = clienteImple;
     }
 
-
     @Override
-    public String create(Reserva reserva) {
-
-        int idCliente = reserva.getCliente().getId_Cliente();
-        var cliente=  clienteImple.cliente(idCliente);
-        Long reserva_codigo= reserva.getCodigo_reserva();
-        Date fecha_Reserva= reserva.getFecha_Reserva();
-        int habita = reserva.getHabitacion().getNumero();
-        int valorHabitacion= reserva.getHabitacion().getPrecio();
-        String TipoHabitacion = reserva.getHabitacion().getTipoHabitacion();
-        double totalPago=0;
-
-        if(TipoHabitacion.equals("premiun")){
-            totalPago= totalApagar(valorHabitacion);
-        }else{
-            totalPago=valorHabitacion;
-        }
+    public Reserva create(Reserva reserva) {
 
 
-        Date fecha = reserva.getFecha_Reserva();
-        LocalDate fechaReserva = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Integer idCliente= reserva.getCliente().getCedula();
+        LocalDate fechaReserva=reserva.getFecha_Reserva().toLocalDate();
         LocalDate fechaActual = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String fechaActualFormateada = fechaActual.format(formatter);
+        Date fechaReservaConsulta=reserva.getFecha_Reserva();
+        Integer habitacion= reserva.getHabitacion().getNumero_habitacion();
 
-        if (cliente != null && habita !=0 && fecha != null && !fechaReserva.isBefore(fechaActual) ) {
-             this.reservaImple.create(reserva);
-        }
+            Optional<Cliente> cliente= Optional.ofNullable(this.clienteImple.cliente(idCliente));
+            Optional<List<Habitacion>> habitaciones= Optional.of(this.reservaImple.findByDateDisponibilidad(fechaReservaConsulta));
+            boolean confirmacion= habitaciones.stream().equals(habitacion);
 
 
-     return "{"+"Total Pago :" + totalPago +
-                 "Reserva Codigo :" +reserva_codigo +
-                 "Numero Habitacion :"+habita +
-                "Fecha Reserva :"+ fecha_Reserva + '\'' +
-                '}';
+            if(!cliente.isPresent() || fechaReserva.equals(null) || fechaReserva.isBefore(fechaActual)   ){
+                throw new ReservaInvalidoException("No se pudo crear la reserva, valide  que la reserva tenga todos los parametros  y que la fecha sea igual a hoy o superior ");
+            }
+            if(!confirmacion){
+                throw new ReservaInvalidoException("La habitacion seleccionada para esa fecha esta reservada ");
+
+            }
+            return this.reservaImple.create(reserva);
+
 
     }
 
 
-
-
-
     @Override
-    public boolean delete(Long idReserva) {
-        return this.reservaImple.delete(idReserva);
+    public boolean delete(Integer idReserva) {
+
+        try{
+            return this.reservaImple.delete(idReserva);
+        }catch (Exception e){
+            throw new ReservaInvalidoException("El cliente no se pudo eliminar, el id no existe");
+        }
+
     }
 
     @Override
     public List<Reserva> reservaAll() {
-        return this.reservaImple.reservaAll();
+
+
+        try{
+            return this.reservaImple.reservaAll();
+        }catch (Exception e){
+            throw new ReservaInvalidoException("No existen clientes en la base de datos");
+        }
+
+
+
     }
 
     @Override
-    public Reserva reserva(Long idReserva) {
-        return this.reservaImple.reserva(idReserva);
+    public Reserva reserva(Integer idReserva) {
+
+
+        try{
+            return this.reservaImple.reserva(idReserva);
+        }catch (Exception e){
+            throw new ReservaInvalidoException("No existe el cliente  en la base de datos");
+        }
+
+
+
     }
 
-    @Override
-    public List<Reserva> queryConsultaPorFechaYHabitacion(String tipoHabitacion,String fecha) {
-        return this.reservaImple.QueryConsultaPorFechaYHabitacion(tipoHabitacion,fecha);
+
+
+
+    public List<Habitacion> FindbyDateTypeRoom(Date fecha, String tipoHabitacion){
+
+        if(fecha.equals(null)||tipoHabitacion.equals(null)   ){
+            throw new ReservaInvalidoException("los Campos estan null el Patvariable y RequestParan son /{fechaReserva}/?tipoHabitacion= ");
+        }
+        return this.reservaImple.FindbyDateTypeRoom(fecha, tipoHabitacion);
+
     }
 
-    @Override
-    public Double totalApagar(int valorBaseHabitacion) {
 
-        double totalApagar=(valorBaseHabitacion*0.05);
-        return totalApagar;
+
+    public List<Habitacion> findByDateDisponibilidad(Date fecha){
+
+        if(fecha.equals(null)  ){
+            throw new ReservaInvalidoException("La fecha ingresada debe ser RequesParent es ?fecha=yyyymmdd ");
+        }
+       return  this.reservaImple.findByDateDisponibilidad(fecha);
+
     }
+
+
+
+
+    public List<Cliente> ClientesConReserva(Integer cedula){
+        return this.reservaImple.ClientesConReserva(cedula);
+    }
+
 }

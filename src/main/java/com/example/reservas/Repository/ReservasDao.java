@@ -7,11 +7,12 @@ import java.util.List;
 public interface ReservasDao {
 
     Reserva create(Reserva reserva);
-    boolean delete(Long idReserva);
+    boolean delete(Integer idReserva);
     List<Reserva> reservaAll();
-    Reserva reserva(Long idReserva);
+    Reserva reserva(Integer idReserva);
 
-    List<Reserva>  QueryConsultaPorFechaYHabitacion( String tipoHabitacion, String fecha );
+
+
 
 
 }
