@@ -22,12 +22,14 @@ public class Reserva  implements Serializable {
     @Column(name = "fecha_Reserva", nullable = false)
     private Date fecha_Reserva;
 
-    @ManyToOne
+    //carga lenta en base de datos
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cedula")
     @JsonIgnoreProperties("reserva")
     private Cliente cliente;
 
-    @ManyToOne
+    //carga Lenta   carga rapida con leasy
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "habitacion")
     @JsonIgnoreProperties("reserva")
     private Habitacion habitacion ;
@@ -37,7 +39,11 @@ public class Reserva  implements Serializable {
     private Double total_pagar;
     public Reserva(){};
 
-    public Reserva( Date fecha_Reserva, Cliente cliente, Habitacion habitacion) {
+    public Reserva(Integer codigo_reserva) {
+        this.codigo_reserva = codigo_reserva;
+    }
+
+    public Reserva(Date fecha_Reserva, Cliente cliente, Habitacion habitacion) {
         this.fecha_Reserva = fecha_Reserva;
         this.cliente = cliente;
         this.habitacion = habitacion;
@@ -55,7 +61,6 @@ public class Reserva  implements Serializable {
     }
 
 
-
     public Habitacion getHabitacion() {
       return habitacion;
  }
@@ -66,5 +71,25 @@ public class Reserva  implements Serializable {
 
     public Double getTotal_pagar() {
         return getHabitacion().getPrecio();
+    }
+
+    public void setCodigo_reserva(Integer codigo_reserva) {
+        this.codigo_reserva = codigo_reserva;
+    }
+
+    public void setFecha_Reserva(Date fecha_Reserva) {
+        this.fecha_Reserva = fecha_Reserva;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setHabitacion(Habitacion habitacion) {
+        this.habitacion = habitacion;
+    }
+
+    public void setTotal_pagar(Double total_pagar) {
+        this.total_pagar = total_pagar;
     }
 }

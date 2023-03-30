@@ -1,7 +1,6 @@
 package com.example.reservas.Repository;
 
 import com.example.reservas.Model.Habitacion;
-import com.example.reservas.Model.Tipohabitacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +13,6 @@ import java.util.Optional;
 public class HabitacionImple implements HabitacionDao {
 
     private HabitacionRepositorio habitacionRepositorio;
-    private Tipohabitacion tipohabitacion;
 
     @Autowired
     public HabitacionImple(HabitacionRepositorio habitacionRepositorio) {

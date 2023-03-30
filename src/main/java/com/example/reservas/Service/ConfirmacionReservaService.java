@@ -6,6 +6,8 @@ import com.example.reservas.Repository.ConfirmacionReservaImple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ConfirmacionReservaService {
 
@@ -18,12 +20,9 @@ public class ConfirmacionReservaService {
         this.confirmacionReservaImple = confirmacionReservaImple;
     }
 
-
-    public String ConfirmacionReserva(Reserva reserva){
-
+    public Optional<String> ConfirmacionReserva(Reserva reserva){
 
             if(reserva.equals(null)){
-
                 throw new RuntimeException("La reserva tiene campos vacios");
             }
 

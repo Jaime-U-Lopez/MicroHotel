@@ -44,5 +44,15 @@ public class Habitacion   implements Serializable {
         return precio;
     }
 
+    public void setNumero_habitacion(Integer numero_habitacion) {
+        this.numero_habitacion = numero_habitacion;
+    }
 
+    public void setTipoHabitacion(String tipoHabitacion) {
+        this.tipoHabitacion = tipoHabitacion;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
 }
