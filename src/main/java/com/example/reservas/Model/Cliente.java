@@ -35,7 +35,7 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
-    ;
+
 
     public Cliente(Integer cedula) {
         this.cedula = cedula;
@@ -87,11 +87,7 @@ public class Cliente implements Serializable {
         this.correo_electronico = correo_electronico;
     }
 
-    public void setReserva(List<Reserva> reserva) {
-        this.reserva = reserva;
-    }
-
-    public String getDireccion() {
+      public String getDireccion() {
         return direccion;
     }
 

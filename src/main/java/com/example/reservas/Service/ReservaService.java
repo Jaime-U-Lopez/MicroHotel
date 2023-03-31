@@ -125,11 +125,8 @@ public class ReservaService implements ReservaServiceMetodos {
 
 
     public List<Cliente> ClientesConReserva(Integer cedula) {
-
         if(cedula ==null || !cedula.toString().matches("\\d+") ){
             throw new ReservaInvalidoException("La cedula esta errada o null , solo puede ser numerica"  );
-
-
         }
         return this.reservaImple.ClientesConReserva(cedula);
     }
