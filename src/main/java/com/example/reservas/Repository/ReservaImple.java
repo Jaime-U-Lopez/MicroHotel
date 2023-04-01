@@ -1,5 +1,7 @@
 package com.example.reservas.Repository;
 
+import com.example.reservas.ClasesDto.ReservaDto;
+import com.example.reservas.Exception.ReservaInvalidoException;
 import com.example.reservas.Model.Cliente;
 import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Model.Reserva;
@@ -21,10 +23,24 @@ public class ReservaImple  implements ReservasDao {
 
     }
     @Override
-    public Reserva create(Reserva reserva) {
+    public ReservaDto create(ReservaDto reservaDto) {
 
-        return this.reservaRepositorio.save(reserva);
+       Cliente  documentoIdentidad = Optional.ofNullable(reservaDto.getDocumento_identidad())
+               .map(dni -> new Cliente(dni))
+               .orElseThrow(() -> new ReservaInvalidoException("No se pudo crear la reserva, valide que la reserva tenga un cliente asociado"));
 
+        Habitacion habitacion = Optional.ofNullable(reservaDto.getNumero_habitacion())
+                .map(dni -> new Habitacion(dni))
+                .orElseThrow(() -> new ReservaInvalidoException("No se pudo crear la reserva, valide que la reserva tenga un habitacion  asociado"));
+
+        Reserva reserva = new Reserva(
+                reservaDto.getFecha()
+                ,documentoIdentidad,
+                habitacion);
+
+        this.reservaRepositorio.save(reserva);
+
+        return reservaDto;
     }
 
     @Override

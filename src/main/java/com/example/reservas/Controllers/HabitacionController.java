@@ -4,6 +4,7 @@ import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Service.HabitacionService;
 
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/")
+@Api(tags = "Habitaciones Hotel ", description = "Operaciones para gestionar las Habitaciones del Hotel ")
 public class HabitacionController {
 
 

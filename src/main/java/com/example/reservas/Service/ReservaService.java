@@ -1,5 +1,6 @@
 package com.example.reservas.Service;
 
+import com.example.reservas.ClasesDto.ReservaDto;
 import com.example.reservas.Exception.ReservaInvalidoException;
 import com.example.reservas.Model.Cliente;
 import com.example.reservas.Model.Habitacion;
@@ -19,31 +20,33 @@ public class ReservaService implements ReservaServiceMetodos {
 
 
     private ReservaImple reservaImple;
-
     private ClienteImple clienteImple;
+    private ReservaDto reservaDto;
+
 
 
     @Autowired
-    public ReservaService(ReservaImple reservaImple, ClienteImple clienteImple) {
+    public ReservaService(ReservaImple reservaImple, ClienteImple clienteImple, ReservaDto reservaDto) {
         this.reservaImple = reservaImple;
         this.clienteImple = clienteImple;
+        this.reservaDto = reservaDto;
     }
 
     @Override
-    public Reserva create(Reserva reserva) {
+    public ReservaDto create(ReservaDto reservaDto) {
 
         LocalDate fechaActual = LocalDate.now();
-        Date fechaReservaConsulta = reserva.getFecha_Reserva();
+        Date fechaReservaCreate = reservaDto.getFecha();
 
-        Integer idCliente = Optional.ofNullable(reserva.getCliente())
-                .map(Cliente::getCedula)
+        Integer idCliente = Optional.ofNullable(reservaDto.getDocumento_identidad())
+                .map(Integer::valueOf)
                 .orElseThrow(() -> new ReservaInvalidoException("No se pudo crear la reserva, valide que la reserva tenga un cliente asociado"));
-        LocalDate fechaReserva = Optional.ofNullable(reserva.getFecha_Reserva())
+        LocalDate fechaReserva = Optional.ofNullable(reservaDto.getFecha())
                 .map(Date::toLocalDate)
                 .orElseThrow(() -> new ReservaInvalidoException("No se pudo crear la reserva, valide que la reserva tenga una fecha de reserva"));
 
-        Integer habitacion = Optional.ofNullable(reserva.getHabitacion())
-                .map(Habitacion::getNumero_habitacion)
+        Integer habitacion = Optional.ofNullable(reservaDto.getNumero_habitacion())
+                .map(Integer::valueOf)
                 .orElseThrow(() -> new ReservaInvalidoException("No se pudo crear la reserva, valide que la reserva tenga una habitación asociada"));
 
         Cliente cliente = Optional.ofNullable(this.clienteImple.cliente(idCliente))
@@ -53,7 +56,7 @@ public class ReservaService implements ReservaServiceMetodos {
             throw new ReservaInvalidoException("No se pudo crear la reserva, valide  que la reserva tenga todos los parametros  y que la fecha sea igual a hoy o superior ");
         }
         // Verificar si la habitación está disponible para la fecha de reserva
-        List<Habitacion> habitaciones = Optional.of(reservaImple.findByDateDisponibilidad(fechaReservaConsulta))
+        List<Habitacion> habitaciones = Optional.of(reservaImple.findByDateDisponibilidad(fechaReservaCreate))
                 .orElseThrow(() -> new ReservaInvalidoException("No se pudo crear la reserva, no hay habitaciones disponibles para la fecha de reserva"));
 
         boolean confirmacion = habitaciones.stream().anyMatch(h -> h.getNumero_habitacion().equals(habitacion));
@@ -61,8 +64,8 @@ public class ReservaService implements ReservaServiceMetodos {
             throw new ReservaInvalidoException("La habitacion seleccionada para esa fecha esta reservada ");
 
         }
-        return this.reservaImple.create(reserva);
 
+        return this.reservaImple.create(reservaDto);
 
     }
 
@@ -123,10 +126,9 @@ public class ReservaService implements ReservaServiceMetodos {
 
     }
 
-
     public List<Cliente> ClientesConReserva(Integer cedula) {
-        if(cedula ==null || !cedula.toString().matches("\\d+") ){
-            throw new ReservaInvalidoException("La cedula esta errada o null , solo puede ser numerica"  );
+        if (cedula == null || !cedula.toString().matches("\\d+")) {
+            throw new ReservaInvalidoException("La cedula esta errada o null , solo puede ser numerica");
         }
         return this.reservaImple.ClientesConReserva(cedula);
     }

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/")
-//@Api(tags = "ConfirmacionesReservas API", description = "Operaciones para gestionar Confirmaciones de reservas")
+@Api(tags = "Confirmaciones de Reservas", description = "Operaciones para gestionar Confirmaciones de reservas")
 public class ConfirmacionController {
 
 @Autowired

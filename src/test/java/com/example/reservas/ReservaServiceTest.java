@@ -4,6 +4,7 @@
  */
 package com.example.reservas;
 
+import com.example.reservas.ClasesDto.ReservaDto;
 import com.example.reservas.Exception.ReservaInvalidoException;
 import com.example.reservas.Model.Cliente;
 import com.example.reservas.Model.Habitacion;
@@ -47,11 +48,13 @@ public class ReservaServiceTest {
 
     @Mock
     private ReservaImple reservaImplMock;
+    @Mock
+    private ReservaDto reservaDto;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.reservaService = new ReservaService(reservaImplMock, clienteImplMock);
+        this.reservaService = new ReservaService(reservaImplMock, clienteImplMock, reservaDto);
     }
 
     @Test

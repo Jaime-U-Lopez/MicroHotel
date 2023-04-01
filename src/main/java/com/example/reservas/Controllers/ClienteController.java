@@ -3,6 +3,7 @@ package com.example.reservas.Controllers;
 import com.example.reservas.Model.Cliente;
 import com.example.reservas.Service.ClienteService;
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/")
+@Api(tags = "Cliente", description = "Operaciones para gestionar un cliente")
 public class ClienteController {
 
 

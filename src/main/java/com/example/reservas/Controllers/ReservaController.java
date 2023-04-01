@@ -1,6 +1,7 @@
 package com.example.reservas.Controllers;
 
 
+import com.example.reservas.ClasesDto.ReservaDto;
 import com.example.reservas.Model.Cliente;
 import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Model.Reserva;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/")
+@Api(tags = "Reservas de Hotel ", description = "Operaciones para gestionar las Reservas del Hotel ")
 public class ReservaController {
 
     @Autowired
@@ -52,8 +54,8 @@ public class ReservaController {
 
     @PostMapping("reservas")
     @Operation(summary = "Crear Reserva en la base de datos ")
-    public ResponseEntity<Reserva> createReserva(@RequestBody Reserva reserva) {
-        Optional<Reserva> validacionReserva = Optional.of(reservaService.create(reserva));
+    public ResponseEntity<ReservaDto> createReserva(@RequestBody ReservaDto reservaDto) {
+        Optional<ReservaDto> validacionReserva = Optional.of(reservaService.create(reservaDto));
         if (validacionReserva != null) {
             return new ResponseEntity(validacionReserva.get(), HttpStatus.CREATED);
         }
