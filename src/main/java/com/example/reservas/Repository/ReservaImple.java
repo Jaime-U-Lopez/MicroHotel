@@ -5,6 +5,7 @@ import com.example.reservas.Exception.ReservaInvalidoException;
 import com.example.reservas.Model.Cliente;
 import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Model.Reserva;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,15 +16,21 @@ import java.util.*;
 public class ReservaImple  implements ReservasDao {
 
     private ReservaRepositorio reservaRepositorio;
+
     private ClienteRepositorio clienteRepositorio;
-
     @Autowired
-    public ReservaImple(ReservaRepositorio reservaRepositorio) {
+    public ReservaImple(ReservaRepositorio reservaRepositorio, ClienteRepositorio clienteRepositorio) {
         this.reservaRepositorio = reservaRepositorio;
-
+        this.clienteRepositorio = clienteRepositorio;
     }
+
+
+
+
+
+
     @Override
-    public ReservaDto create(ReservaDto reservaDto) {
+    public Reserva create(ReservaDto reservaDto) {
 
        Cliente  documentoIdentidad = Optional.ofNullable(reservaDto.getDocumento_identidad())
                .map(dni -> new Cliente(dni))
@@ -35,13 +42,16 @@ public class ReservaImple  implements ReservasDao {
 
         Reserva reserva = new Reserva(
                 reservaDto.getFecha()
-                ,documentoIdentidad,
-                habitacion);
+                ,documentoIdentidad
+                ,habitacion
+                );
 
-        this.reservaRepositorio.save(reserva);
+        return  this.reservaRepositorio.save(reserva);
 
-        return reservaDto;
     }
+
+
+
 
     @Override
     public boolean delete(Integer idReserva) {

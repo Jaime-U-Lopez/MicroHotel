@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ReservasDao {
 
-    ReservaDto create(ReservaDto reserva);
+    Reserva create(ReservaDto reserva);
     boolean delete(Integer idReserva);
     List<Reserva> reservaAll();
     Reserva reserva(Integer idReserva);

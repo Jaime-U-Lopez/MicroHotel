@@ -8,10 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Date;
 
-@Service
 public class ReservaDto {
 
-    @Id
     private Integer id;
     private Integer numero_habitacion;
     private Date Fecha;

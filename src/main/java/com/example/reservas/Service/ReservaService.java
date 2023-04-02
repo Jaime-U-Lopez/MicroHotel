@@ -21,15 +21,13 @@ public class ReservaService implements ReservaServiceMetodos {
 
     private ReservaImple reservaImple;
     private ClienteImple clienteImple;
-    private ReservaDto reservaDto;
 
 
 
     @Autowired
-    public ReservaService(ReservaImple reservaImple, ClienteImple clienteImple, ReservaDto reservaDto) {
+    public ReservaService(ReservaImple reservaImple, ClienteImple clienteImple) {
         this.reservaImple = reservaImple;
         this.clienteImple = clienteImple;
-        this.reservaDto = reservaDto;
     }
 
     @Override
@@ -53,7 +51,7 @@ public class ReservaService implements ReservaServiceMetodos {
                 .orElseThrow(() -> new ReservaInvalidoException("No se pudo crear la reserva, el cliente asociado no existe en la base de datos"));
 
         if (fechaReserva.isBefore(fechaActual)) {
-            throw new ReservaInvalidoException("No se pudo crear la reserva, valide  que la reserva tenga todos los parametros  y que la fecha sea igual a hoy o superior ");
+            throw new ReservaInvalidoException("No se pudo crear la reserva, valide  que la fecha sea igual a hoy o superior ");
         }
         // Verificar si la habitación está disponible para la fecha de reserva
         List<Habitacion> habitaciones = Optional.of(reservaImple.findByDateDisponibilidad(fechaReservaCreate))
@@ -64,8 +62,8 @@ public class ReservaService implements ReservaServiceMetodos {
             throw new ReservaInvalidoException("La habitacion seleccionada para esa fecha esta reservada ");
 
         }
-
-        return this.reservaImple.create(reservaDto);
+        this.reservaImple.create(reservaDto);
+        return reservaDto;
 
     }
 

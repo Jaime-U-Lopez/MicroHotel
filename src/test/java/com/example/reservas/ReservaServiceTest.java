@@ -54,7 +54,7 @@ public class ReservaServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.reservaService = new ReservaService(reservaImplMock, clienteImplMock, reservaDto);
+        this.reservaService = new ReservaService(reservaImplMock, clienteImplMock);
     }
 
     @Test
@@ -208,92 +208,95 @@ public class ReservaServiceTest {
         fail("Se esperaba una excepción ReservaInvalidoException");
     }
 
+
     @Test(expected = ReservaInvalidoException.class)
     public void testCreateException1() {
         Reserva reserva = new Reserva();
         reserva.setCliente(null);
         reserva.setFecha_Reserva(null);
         reserva.setHabitacion(null);
-        reservaService.create(reserva);
-        fail("Se esperaba una excepción ReservaInvalidoException");
-    }
-
-    @Test
-    public void testCreateReserva() {
-        // crear un objeto Reserva para probar
-        Reserva reserva = new Reserva();
-       // reserva.setCodigo_reserva(1);
-        String fechaStr="2023-04-01";
-        Date fecha =Date.valueOf(fechaStr);
-        reserva.setFecha_Reserva(fecha);
-        // crear un objeto Cliente asociado a la reserva
-        Cliente cliente = new Cliente();
-        cliente.setCedula(1);
-        cliente.setNombre("Juan");
-        cliente.setApellido("Perez");
-        cliente.setEdad(25);
-        cliente.setDireccion("Perez");
-        cliente.setCorreo_electronico("juanperez@example.com");
-        reserva.setCliente(cliente);
-        // crear un objeto Habitacion asociado a la reserva
-        Habitacion habitacion = new Habitacion();
-        habitacion.setNumero_habitacion(12);
-        habitacion.setTipoHabitacion("simple");
-        habitacion.setPrecio(100000.0);
-        reserva.setHabitacion(habitacion);
-        // mockear el comportamiento de los repositorios
-        when(clienteImplMock.create(cliente)).thenReturn(cliente);
-        when(clienteImplMock.cliente(cliente.getCedula())).thenReturn(cliente);
-        when(habitacionImplMock.create(habitacion)).thenReturn(habitacion);
-        List<Habitacion> habitacionesDisponibles = new ArrayList<>();
-        habitacionesDisponibles.add(habitacion);
-        when(reservaImplMock.findByDateDisponibilidad(fecha)).thenReturn(habitacionesDisponibles);
-        when(reservaImplMock.create(reserva)).thenReturn(reserva);
-        // crear la reserva
-        Reserva createdReserva = reservaService.create(reserva);
-        // verificar que se ha creado la reserva correctamente
-        assertNotNull(createdReserva);
-        assertEquals(reserva, createdReserva);
-    }
-
-    @Test(expected = ReservaInvalidoException.class)
-    public void testCreateReservaWithMissingReservationDate() {
-        Reserva reserva = new Reserva();
-        Cliente cliente = new Cliente();
-        cliente.setCedula(1);
-        cliente.setNombre("Juan");
-        cliente.setApellido("Perez");
-        cliente.setEdad(25);
-        cliente.setDireccion("Perez");
-        cliente.setCorreo_electronico("juanperez@example.com");
-        reserva.setCliente(cliente);
-        Habitacion habitacion = new Habitacion();
-        habitacion.setNumero_habitacion(12);
-        habitacion.setTipoHabitacion("simple");
-        habitacion.setPrecio(100000.0);
-        reserva.setHabitacion(habitacion);
-        when(reservaImplMock.findByDateDisponibilidad(any(Date.class))).thenReturn(Collections.singletonList(habitacion));
-        when(clienteImplMock.create(cliente)).thenReturn(cliente);
-        when(clienteImplMock.cliente(cliente.getCedula())).thenReturn(cliente);
-        reservaService.create(reserva);
+        reservaService.create(reservaDto);
         fail("Se esperaba una excepción ReservaInvalidoException");
     }
 
 
 
-    @Test(expected = ReservaInvalidoException.class)
-    public void testCreateReservaWithMissingClient() {
-        Reserva reserva = new Reserva();
-        reserva.setFecha_Reserva(Date.valueOf("2023-04-01"));
-        Habitacion habitacion = new Habitacion();
-        habitacion.setNumero_habitacion(12);
-        habitacion.setTipoHabitacion("simple");
-        habitacion.setPrecio(100000.0);
-        reserva.setHabitacion(habitacion);
-        when(reservaImplMock.findByDateDisponibilidad(any(Date.class))).thenReturn(Collections.singletonList(habitacion));
-        reservaService.create(reserva);
-        fail("Se esperaba una excepción ReservaInvalidoException");
-    }
+        @Test
+        public void testCreateReserva() {
+            // crear un objeto Reserva para probar
+            Reserva reserva = new Reserva();
+           // reserva.setCodigo_reserva(1);
+            String fechaStr="2023-04-01";
+            Date fecha =Date.valueOf(fechaStr);
+            reserva.setFecha_Reserva(fecha);
+            // crear un objeto Cliente asociado a la reserva
+            Cliente cliente = new Cliente();
+            cliente.setCedula(1);
+            cliente.setNombre("Juan");
+            cliente.setApellido("Perez");
+            cliente.setEdad(25);
+            cliente.setDireccion("Perez");
+            cliente.setCorreo_electronico("juanperez@example.com");
+            reserva.setCliente(cliente);
+            // crear un objeto Habitacion asociado a la reserva
+            Habitacion habitacion = new Habitacion();
+            habitacion.setNumero_habitacion(12);
+            habitacion.setTipoHabitacion("simple");
+            habitacion.setPrecio(100000.0);
+            reserva.setHabitacion(habitacion);
+            // mockear el comportamiento de los repositorios
+            when(clienteImplMock.create(cliente)).thenReturn(cliente);
+            when(clienteImplMock.cliente(cliente.getCedula())).thenReturn(cliente);
+            when(habitacionImplMock.create(habitacion)).thenReturn(habitacion);
+            List<Habitacion> habitacionesDisponibles = new ArrayList<>();
+            habitacionesDisponibles.add(habitacion);
+            when(reservaImplMock.findByDateDisponibilidad(fecha)).thenReturn(habitacionesDisponibles);
+            when(reservaImplMock.create(reservaDto)).thenReturn(reserva);
+            // crear la reserva
+            ReservaDto createdReservaDto = reservaService.create(reservaDto);
+            // verificar que se ha creado la reserva correctamente
+            assertNotNull(createdReservaDto);
+            assertEquals(reserva, createdReservaDto);
+        }
+
+        @Test(expected = ReservaInvalidoException.class)
+        public void testCreateReservaWithMissingReservationDate() {
+            Reserva reserva = new Reserva();
+            Cliente cliente = new Cliente();
+            cliente.setCedula(1);
+            cliente.setNombre("Juan");
+            cliente.setApellido("Perez");
+            cliente.setEdad(25);
+            cliente.setDireccion("Perez");
+            cliente.setCorreo_electronico("juanperez@example.com");
+            reserva.setCliente(cliente);
+            Habitacion habitacion = new Habitacion();
+            habitacion.setNumero_habitacion(12);
+            habitacion.setTipoHabitacion("simple");
+            habitacion.setPrecio(100000.0);
+            reserva.setHabitacion(habitacion);
+            when(reservaImplMock.findByDateDisponibilidad(any(Date.class))).thenReturn(Collections.singletonList(habitacion));
+            when(clienteImplMock.create(cliente)).thenReturn(cliente);
+            when(clienteImplMock.cliente(cliente.getCedula())).thenReturn(cliente);
+            reservaService.create(reservaDto);
+            fail("Se esperaba una excepción ReservaInvalidoException");
+        }
+
+
+
+        @Test(expected = ReservaInvalidoException.class)
+        public void testCreateReservaWithMissingClient() {
+            Reserva reserva = new Reserva();
+            reserva.setFecha_Reserva(Date.valueOf("2023-04-01"));
+            Habitacion habitacion = new Habitacion();
+            habitacion.setNumero_habitacion(12);
+            habitacion.setTipoHabitacion("simple");
+            habitacion.setPrecio(100000.0);
+            reserva.setHabitacion(habitacion);
+            when(reservaImplMock.findByDateDisponibilidad(any(Date.class))).thenReturn(Collections.singletonList(habitacion));
+            reservaService.create(reservaDto);
+            fail("Se esperaba una excepción ReservaInvalidoException");
+        }
 
     @Test
     public void testClientesConReserva() {
