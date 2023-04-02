@@ -8,7 +8,7 @@ Creado por capas como codigo limplio, en el cual se crea las operaciones de Crud
 * Con concexión a la base de datos de MYSQL ( com.mysql:mysql-connector-j:8.0.32)
 * Con Data Jpa 2.7.11
 * Con Junit 4 version 2.7.11
-* Mokito para pruebas
+* Mokito para pruebas unitarias, como interceptor y emulador de base de datos
 * Con Swagger 3.0.0
 * Queryz personalizados de Jpa
 * Inyección de dependencias
