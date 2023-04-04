@@ -14,6 +14,9 @@ Creado por capas como codigo limplio, en el cual se crea las operaciones de Crud
 * Inyección de dependencias
 * Maven como gestor de dependencias
 * Patrones DTO y Diseño DAO para Repository
+* Principios Solid
+* Diseño Cadena Responsabilidad 
+* Diseño Capas ( codigo Limpio)
 
 
 Entidades :
@@ -21,3 +24,7 @@ Entidades :
 - Cliente
 - Reserva
 - Habitación
+
+
+### Diagrama de Clases :
+![DiseñoClasesDiagramaReservas](https://user-images.githubusercontent.com/50783391/229843341-1ecf333b-0e3f-4128-88cf-7cd095d0ab08.png)
