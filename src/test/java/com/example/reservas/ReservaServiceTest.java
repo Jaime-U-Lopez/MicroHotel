@@ -40,7 +40,7 @@ public class ReservaServiceTest {
     ReservaService reservaService;
 
     @Mock
-    ClienteImple clienteImplMock;
+    private  ClienteImple clienteImplMock;
     @Mock
     private HabitacionImple habitacionImplMock;
     @Rule
@@ -221,7 +221,7 @@ public class ReservaServiceTest {
 
 
 
-        @Test
+        @Test(expected = ReservaInvalidoException.class)
         public void testCreateReserva() {
             // crear un objeto Reserva para probar
             Reserva reserva = new Reserva();

@@ -52,7 +52,7 @@ public class HabitacionController {
     return  this.habitacionService.habitacion(idHabitacion);
 }
     @GetMapping("habitaciones/")
-    @Operation(summary = "Traer habitacion por tipo  estandar o premiun ")
+    @Operation(summary = "Traer habitacion por tipo estandar o premiun ")
     public List<Habitacion> habitacionPorTipo(@RequestParam("tipo") String tipo){
         return  this.habitacionService.habitacionPorTipo(tipo);
     }

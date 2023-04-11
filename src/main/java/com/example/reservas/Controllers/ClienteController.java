@@ -38,7 +38,6 @@ public class ClienteController {
     @Operation(summary = "Crear un cliente")
     @PostMapping("clientes")
     public ResponseEntity<Cliente> createCliente(@NotNull @Valid @RequestBody Cliente cliente) {
-
         Cliente clienteCreado = this.clienteService.create(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteCreado);
     }
