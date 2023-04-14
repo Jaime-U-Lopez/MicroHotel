@@ -1,8 +1,7 @@
 package com.example.reservas.Controllers;
 
 
-import com.example.reservas.ClasesDto.ReservaDto;
-import com.example.reservas.Model.Cliente;
+import com.example.reservas.Dto.ReservaDto;
 import com.example.reservas.Model.Habitacion;
 import com.example.reservas.Model.Reserva;
 import com.example.reservas.Service.ReservaService;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,28 +25,39 @@ public class ReservaController {
     private ReservaService reservaService;
 
     @GetMapping("reservas")
-    @Operation(summary = "Listar Reservas, puede ser todas o por fecha o por  id cliente ")
+    @Operation(summary = "En esta opcion podras rellenar los campos a necesidad para las " +
+            "siguiente consultas : - Listar todas Reservas (no diligencias campos)" +
+            " - Id cliente con reserva ( solo el campo de id cliente ) " +
+            " - Consulta por fecha y por  id cliente" +
+            " - Id reserva "
+    )
+
     public Object reservas(
-            @RequestParam(required = false) Integer clienteReserva,
-            @RequestParam(required = false) String fecha
+            @RequestParam(required = false) @ApiParam(value = "Id cliente con Reserva ", example = "123") Integer clienteReserva,
+            @RequestParam(required = false) @ApiParam(value = "Ingresa la fecha a consultar  ", example = "2000-05.22") String fecha,
+            @RequestParam(required = false) @ApiParam(value = "Id de  Reserva a consultar ", example = "2123") Integer idReserva
     ) {
         if (clienteReserva != null) {
             return this.reservaService.ClientesConReserva(clienteReserva);
         } else if (fecha != null) {
             Date fechault = Date.valueOf(fecha);
-            return this.reservaService.findByDateDisponibilidad(fechault);
-        } else {
+            return this.reservaService.findByDateRoomDisponibilidad(fechault);
+        }else if (idReserva != null) {
+            return this.reservaService.reserva(idReserva);
+
+        }
+        else {
             return this.reservaService.reservaAll();
         }
     }
 
 
 
-
-    @GetMapping("reservas/{idReserva}")
-    @Operation(summary = "Listar Reserva por id ")
-    public Reserva reserva(@PathVariable Integer idReserva) {
-        return this.reservaService.reserva(idReserva);
+    @GetMapping("reservas/{fechaReserva}/")
+    @Operation(summary = "Buscar Habitacion para reservar por fecha y tipo habitacion ")
+    public List<Habitacion> findbyDateTypeRoom(@PathVariable String fechaReserva, @RequestParam("tipoHabitacion") String tipoHabitacion) {
+        Date fechault = Date.valueOf(fechaReserva);
+        return this.reservaService.FindbyDateByTypeRoom(fechault, tipoHabitacion);
     }
 
 
@@ -75,12 +84,5 @@ public class ReservaController {
 
 
 
-
-    @GetMapping("reservas/{fechaReserva}/")
-    @Operation(summary = "Buscar Habitacion para reservar por fecha y tipo habitacion ")
-    public List<Habitacion> findbyDateType(@PathVariable String fechaReserva, @RequestParam("tipoHabitacion") String tipoHabitacion) {
-        Date fechault = Date.valueOf(fechaReserva);
-        return this.reservaService.FindbyDateTypeRoom(fechault, tipoHabitacion);
-    }
 
 }

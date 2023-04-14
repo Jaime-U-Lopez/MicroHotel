@@ -12,8 +12,4 @@ public interface HabitacionRepositorio  extends JpaRepository<Habitacion,Integer
      List<Habitacion> findByTipoHabitacion(@Param("tipo") String tipo);
 
 
-    //List<Habitacion> findByReservasFechaReserva(Date fecha);
-
-  //  List<Habitacion> findByTipoAndReservasFechaReserva(TipoHabitacion tipo, Date fecha);
-
 }

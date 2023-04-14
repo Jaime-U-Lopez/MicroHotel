@@ -4,7 +4,7 @@
  */
 package com.example.reservas;
 
-import com.example.reservas.ClasesDto.ReservaDto;
+import com.example.reservas.Dto.ReservaDto;
 import com.example.reservas.Exception.ReservaInvalidoException;
 import com.example.reservas.Model.Cliente;
 import com.example.reservas.Model.Habitacion;
@@ -12,6 +12,7 @@ import com.example.reservas.Model.Reserva;
 import com.example.reservas.Repository.ClienteImple;
 import com.example.reservas.Repository.HabitacionImple;
 import com.example.reservas.Repository.ReservaImple;
+import com.example.reservas.Service.HabitacionService;
 import com.example.reservas.Service.ReservaService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,7 +24,6 @@ import org.mockito.MockitoAnnotations;
 
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +46,11 @@ public class ReservaServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+
+    @Mock
+    private HabitacionService habitacionService;
+
+
     @Mock
     private ReservaImple reservaImplMock;
     @Mock
@@ -54,7 +59,7 @@ public class ReservaServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.reservaService = new ReservaService(reservaImplMock, clienteImplMock);
+        this.reservaService = new ReservaService(reservaImplMock, clienteImplMock, habitacionService );
     }
 
     @Test
@@ -137,7 +142,7 @@ public class ReservaServiceTest {
     @Test(expected = ReservaInvalidoException.class)
     public void testFindByDateDisponibilidadNull() {
         // Ejecutar el método a probar
-        reservaService.findByDateDisponibilidad(null);
+        reservaService.findByDateRoomDisponibilidad(null);
         // Validar el resultado (no se llegará a esta línea en caso de que se lance la excepción esperada)
         fail("Se esperaba una excepción ReservaInvalidoException");
     }
@@ -151,7 +156,7 @@ public class ReservaServiceTest {
         // Ejecutar el método a probar
         String fechaReserva= "2000-05-20";
         Date fecha = Date.valueOf(fechaReserva);
-        reservaService.findByDateDisponibilidad(fecha);
+        reservaService.findByDateRoomDisponibilidad(fecha);
     }
 
 
@@ -165,7 +170,7 @@ public class ReservaServiceTest {
         // Ejecutar el método a probar
         String fechaReserva= "2000-05-20";
         Date fecha = Date.valueOf(fechaReserva);
-        List<Habitacion> result = reservaService.findByDateDisponibilidad(fecha);
+        List<Habitacion> result = reservaService.findByDateRoomDisponibilidad(fecha);
         // Validar el resultado
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -182,7 +187,7 @@ public class ReservaServiceTest {
         // Configurar el comportamiento del mock
         when(reservaImplMock.FindbyDateTypeRoom(fecha, tipoHabitacion)).thenReturn(List.of(new Habitacion()));
         // Ejecutar el método a probar
-        List<Habitacion> habitaciones = reservaService.FindbyDateTypeRoom(fecha, tipoHabitacion);
+        List<Habitacion> habitaciones = reservaService.FindbyDateByTypeRoom(fecha, tipoHabitacion);
         // Verificar que se llamó al método del mock una sola vez
         verify(reservaImplMock, times(1)).FindbyDateTypeRoom(fecha, tipoHabitacion);
         // Verificar que se obtuvo una lista de habitaciones no vacía
@@ -196,7 +201,7 @@ public class ReservaServiceTest {
         String fechaStr="2000-04-01";
         Date fecha =Date.valueOf(fechaStr);
         // Ejecutar el método a probar con tipoHabitacion null
-        List<Habitacion>  reservasPorTipo= reservaService.FindbyDateTypeRoom(fecha, null);
+        List<Habitacion>  reservasPorTipo= reservaService.FindbyDateByTypeRoom(fecha, null);
         fail("Se esperaba una excepción ReservaInvalidoException");
     }
 
@@ -204,7 +209,7 @@ public class ReservaServiceTest {
     @Test(expected = ReservaInvalidoException.class)
     public void testFindByDateTypeRoomFechaNull() {
         // Ejecutar el método a probar con fecha null
-        reservaService.FindbyDateTypeRoom(null, "tipoHabitacion");
+        reservaService.FindbyDateByTypeRoom(null, "tipoHabitacion");
         fail("Se esperaba una excepción ReservaInvalidoException");
     }
 

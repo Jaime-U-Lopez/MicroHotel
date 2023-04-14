@@ -11,8 +11,11 @@ public interface ClienteDao {
     List<Cliente> createsArray(Cliente[] clientes);
     Cliente create(Cliente cliente);
 
-    boolean delete(int idCliente);
+    Boolean delete(int idCliente);
     List<Cliente> clienteAlll();
 
     Cliente cliente(int idCliente);
+
+
+    List<Cliente>  customerByEgeMayorOrEqual(int edad);
 }

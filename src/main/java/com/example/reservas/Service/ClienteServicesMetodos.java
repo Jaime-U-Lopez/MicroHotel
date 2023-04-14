@@ -9,12 +9,12 @@ public interface ClienteServicesMetodos {
 
     List<Cliente>  createArray(Cliente[] cliente);
     Cliente  create(Cliente cliente);
-    boolean delete(int idCliente);
+    boolean delete(Integer idCliente);
     List<Cliente> clienteAlll();
 
-    Cliente cliente(int idCliente);
+    Cliente cliente(Integer idCliente);
 
-
+    List<Cliente> customerByEgeMayorOrEqual (Integer edad);
 
 
 }

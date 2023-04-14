@@ -34,8 +34,6 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
-
-
     public Cliente(Integer cedula) {
         this.cedula = cedula;
     }

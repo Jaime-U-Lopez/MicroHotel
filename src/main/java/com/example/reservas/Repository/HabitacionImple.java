@@ -1,5 +1,6 @@
 package com.example.reservas.Repository;
 
+import com.example.reservas.Model.Cliente;
 import com.example.reservas.Model.Habitacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,15 +20,22 @@ public class HabitacionImple implements HabitacionDao {
         this.habitacionRepositorio = habitacionRepositorio;
     }
     @Override
-    public Habitacion habitacion(int idHabitacion) {
+    public Habitacion habitacion(int idHabitacion)  throws RuntimeException  {
 
-        try {
             Optional<Habitacion> habitacion = this.habitacionRepositorio.findById(idHabitacion);
+
+        if (habitacion.isPresent()) {
             return habitacion.get();
-        } catch (Exception ex) {
-            throw new RuntimeException("la persona no existe en la base de datos o no se esta conectando a la base de datos  ");
+        } else {
+            return null;
         }
+
+
     }
+
+
+
+
 
     @Override
     public List<Habitacion> habitacionPorTipo(String tipoHabitacion) {
@@ -61,14 +69,10 @@ public class HabitacionImple implements HabitacionDao {
 
     @Override
     public boolean delete(int idHabitacion) {
-        boolean existe = this.habitacionRepositorio.existsById(idHabitacion);
-        if (existe) {
-            this.habitacionRepositorio.deleteById(idHabitacion);
-            return true;
-        }
 
-        return false;
+        this.habitacionRepositorio.deleteById(idHabitacion);
+        return true;
+
     }
-
 
 }

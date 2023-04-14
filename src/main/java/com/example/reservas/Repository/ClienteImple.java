@@ -1,6 +1,7 @@
 package com.example.reservas.Repository;
 
 
+import com.example.reservas.Exception.ClienteInvalidoException;
 import com.example.reservas.Model.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,38 +37,54 @@ public class ClienteImple implements ClienteDao {
     }
 
     @Override
-    public boolean delete(int idCliente) {
+    public Boolean delete(int idCliente)  {
 
-        boolean existencia = this.clienteRepositorio.existsById(idCliente);
-        if (existencia) {
-            this.clienteRepositorio.deleteById(idCliente);
-            return true;
-        }
-        return false;
+
+        this.clienteRepositorio.deleteById(idCliente);;
+        return true;
+
+
+
+
     }
 
     @Override
-    public List<Cliente> clienteAlll() {
+    public List<Cliente> clienteAlll() throws RuntimeException {
 
         List<Cliente> listCliente= new ArrayList<>();
         try {
             this.clienteRepositorio.findAll().forEach(item-> listCliente.add(item));
             return  listCliente;
         }catch (Exception ex){
-            throw new RuntimeException("La lista no existe, no hay clientes " +
+            throw new ClienteInvalidoException ("La lista no existe, no hay clientes " +
                     "en la base de datos o no se esta conectando ");
         }
     }
 
     @Override
-    public Cliente cliente(int idCliente) {
+    public Cliente cliente(int idCliente) throws RuntimeException {
 
-        try {
+
             Optional<Cliente> cliente= this.clienteRepositorio.findById(idCliente);
-            return cliente.get();
-        }catch (Exception e){
-            throw new RuntimeException("El cliente no existe en la base de datos");
-
+        if (!cliente.isPresent()) {
+          return null;
         }
+            return cliente.get();
+
     }
+
+    @Override
+    public  List<Cliente> customerByEgeMayorOrEqual(int edad)  throws RuntimeException {
+
+        Optional<List<Cliente>>  optionalClientes= Optional.ofNullable(this.clienteRepositorio.customerByEgeMayorOrEqual(edad));
+
+        if(!optionalClientes.isPresent()){
+
+            throw new ClienteInvalidoException("No Existe clientes con esa edad o mayores en la base de datos");
+        }
+        return this.clienteRepositorio.customerByEgeMayorOrEqual(edad);
+    };
+
+
+
 }
