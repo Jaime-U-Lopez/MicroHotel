@@ -17,33 +17,41 @@ import java.util.Optional;
 public class ReservaImple implements ReservasDao {
 
     private ReservaRepositorio reservaRepositorio;
-
+private HabitacionRepositorio habitacionRepositorio;
     private ClienteRepositorio clienteRepositorio;
 
     @Autowired
-    public ReservaImple(ReservaRepositorio reservaRepositorio, ClienteRepositorio clienteRepositorio) {
+    public ReservaImple(ReservaRepositorio reservaRepositorio, ClienteRepositorio clienteRepositorio,  HabitacionRepositorio habitacionRepositorio) {
         this.reservaRepositorio = reservaRepositorio;
         this.clienteRepositorio = clienteRepositorio;
+        this.habitacionRepositorio = habitacionRepositorio;
     }
 
 
     @Override
-    public Reserva create(ReservaDto reservaDto) throws RuntimeException {
+    public Reserva create(ReservaDto reservaDto  ) throws RuntimeException {
 
         Integer idCliente=reservaDto.getDocumentoIdentidadCliente();
         Integer numeroHabitacion= reservaDto.getNumeroHabitacion();
-
-        Cliente documentoIdentidad = Optional.ofNullable(idCliente)
+        Date  fechaReserva = reservaDto.getFechaReserva();
+        Cliente clientevalidacion = Optional.ofNullable(idCliente)
                 .map(dni -> new Cliente(dni))
                 .orElseThrow(() -> new ReservaInvalidoException("El Cliente  con id : "+idCliente+ " no existe en base de datos"));
 
-        Habitacion habitacion = Optional.ofNullable(numeroHabitacion)
+        Habitacion habitacionvalidacion = Optional.ofNullable(numeroHabitacion)
                 .map(dni -> new Habitacion(dni))
                 .orElseThrow(() -> new ReservaInvalidoException("La habitacion "+ numeroHabitacion+ "no existe en la base de datos "));
 
+        Cliente cliente = clienteRepositorio.findById(idCliente)
+                .orElseThrow(() -> new ReservaInvalidoException("El Cliente con id : "+idCliente+ " no existe en base de datos"));
+
+        Habitacion habitacion = habitacionRepositorio.findById(numeroHabitacion)
+                .orElseThrow(() -> new ReservaInvalidoException("La habitación "+ numeroHabitacion+ " no existe en la base de datos "));
+
+
         Reserva reserva = new Reserva(
-                reservaDto.getFechaReserva()
-                , documentoIdentidad
+                fechaReserva
+                , cliente
                 , habitacion
         );
 
@@ -59,8 +67,11 @@ public class ReservaImple implements ReservasDao {
         if (existe) {
             this.reservaRepositorio.deleteById(idReserva);
             return true;
+        } else {
+            throw new ReservaInvalidoException("No se pudo eliminar "+ idReserva+" ,  no existe en la base de datos ");
+
         }
-        return false;
+
     }
 
     @Override

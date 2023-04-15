@@ -15,12 +15,12 @@ public class Reserva  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codigo_reserva", nullable = false )
-    private Integer codigo_reserva;
+    @Column(name = "codigo_Reserva", nullable = false )
+    private Integer codigoReserva;
 
 
     @Column(name = "fecha_Reserva", nullable = false)
-    private Date fecha_Reserva;
+    private Date fechaReserva;
 
     //carga lenta en base de datos
     @ManyToOne(fetch = FetchType.EAGER)
@@ -35,18 +35,19 @@ public class Reserva  implements Serializable {
     private Habitacion habitacion ;
 
 
-    @Column(name = "total_pagar", nullable = false)
-    private Double total_pagar;
+    @Column(name = "total_pagar")
+    private Double totalPagar;
     public Reserva(){};
 
     public Reserva(Integer codigo_reserva) {
-        this.codigo_reserva = codigo_reserva;
+        this.codigoReserva = codigo_reserva;
     }
 
     public Reserva(Date fecha_Reserva, Cliente cliente, Habitacion habitacion) {
-        this.fecha_Reserva = fecha_Reserva;
+        this.fechaReserva = fecha_Reserva;
         this.cliente = cliente;
         this.habitacion = habitacion;
+        this.totalPagar=0.0;
 
     }
 
@@ -55,41 +56,39 @@ public class Reserva  implements Serializable {
     }
 
 
-
-     public Date getFecha_Reserva() {
-        return fecha_Reserva;
+    public Integer getCodigoReserva() {
+        return codigoReserva;
     }
 
-
-    public Habitacion getHabitacion() {
-      return habitacion;
- }
-
-    public Integer getCodigo_reserva() {
-        return codigo_reserva;
+    public void setCodigoReserva(Integer codigoReserva) {
+        this.codigoReserva = codigoReserva;
     }
 
-    public Double getTotal_pagar() {
-        return getHabitacion().getPrecio();
+    public Date getFechaReserva() {
+        return fechaReserva;
     }
 
-    public void setCodigo_reserva(Integer codigo_reserva) {
-        this.codigo_reserva = codigo_reserva;
-    }
-
-    public void setFecha_Reserva(Date fecha_Reserva) {
-        this.fecha_Reserva = fecha_Reserva;
+    public void setFechaReserva(Date fechaReserva) {
+        this.fechaReserva = fechaReserva;
     }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
+    public Habitacion getHabitacion() {
+        return habitacion;
+    }
+
     public void setHabitacion(Habitacion habitacion) {
         this.habitacion = habitacion;
     }
 
-    public void setTotal_pagar(Double total_pagar) {
-        this.total_pagar = total_pagar;
+    public Double getTotalPagar() {
+        return totalPagar;
+    }
+
+    public void setTotalPagar(Double totalPagar) {
+        this.totalPagar = totalPagar;
     }
 }

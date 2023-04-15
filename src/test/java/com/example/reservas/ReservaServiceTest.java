@@ -48,7 +48,7 @@ public class ReservaServiceTest {
 
 
     @Mock
-    private HabitacionService habitacionService;
+    private HabitacionImple habitacionImple;
 
 
     @Mock
@@ -59,7 +59,7 @@ public class ReservaServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.reservaService = new ReservaService(reservaImplMock, clienteImplMock, habitacionService );
+        this.reservaService = new ReservaService(reservaImplMock, clienteImplMock, habitacionImple );
     }
 
     @Test
@@ -218,7 +218,7 @@ public class ReservaServiceTest {
     public void testCreateException1() {
         Reserva reserva = new Reserva();
         reserva.setCliente(null);
-        reserva.setFecha_Reserva(null);
+        reserva.setFechaReserva(null);
         reserva.setHabitacion(null);
         reservaService.create(reservaDto);
         fail("Se esperaba una excepción ReservaInvalidoException");
@@ -233,7 +233,7 @@ public class ReservaServiceTest {
            // reserva.setCodigo_reserva(1);
             String fechaStr="2023-04-01";
             Date fecha =Date.valueOf(fechaStr);
-            reserva.setFecha_Reserva(fecha);
+            reserva.setFechaReserva(fecha);
             // crear un objeto Cliente asociado a la reserva
             Cliente cliente = new Cliente();
             cliente.setCedula(1);
@@ -292,7 +292,7 @@ public class ReservaServiceTest {
         @Test(expected = ReservaInvalidoException.class)
         public void testCreateReservaWithMissingClient() {
             Reserva reserva = new Reserva();
-            reserva.setFecha_Reserva(Date.valueOf("2023-04-01"));
+            reserva.setFechaReserva(Date.valueOf("2023-04-01"));
             Habitacion habitacion = new Habitacion();
             habitacion.setNumero_habitacion(12);
             habitacion.setTipoHabitacion("simple");
@@ -315,7 +315,7 @@ public class ReservaServiceTest {
         cliente.setCorreo_electronico("juanperez@example.com");
         Reserva reserva = new Reserva();
         reserva.setCliente(cliente);
-        reserva.setFecha_Reserva(Date.valueOf("2023-05-01"));
+        reserva.setFechaReserva(Date.valueOf("2023-05-01"));
         reserva.setHabitacion(new Habitacion());
         // Mockear el comportamiento del repositorio para que devuelva el cliente con la reserva
         when(reservaImplMock.ClientesConReserva(123456)).thenReturn(Collections.singletonList(cliente));

@@ -14,9 +14,9 @@ public class ConfirmacionReservaImple implements ConfirmacionReservaDao {
     @Override
     public Optional<String> ConfirmacionReserva(Reserva reserva) {
 
-        Integer numeroReserva = reserva.getCodigo_reserva();
+        Integer numeroReserva = reserva.getCodigoReserva();
         Integer numeroHabitacion = reserva.getHabitacion().getNumero_habitacion();
-        LocalDate fechaReserva = Optional.ofNullable(reserva.getFecha_Reserva())
+        LocalDate fechaReserva = Optional.ofNullable(reserva.getFechaReserva())
                 .map(Date::toLocalDate)
                 .orElse(null);
         String tipoHabitacion = Optional.ofNullable(reserva.getHabitacion())

@@ -61,14 +61,18 @@ public class HabitacionService implements HabitacionServiceMetodos {
         Double precio=habitacion.getPrecio();
 
         validarHabitacion(habitacionNumero,precio );
+        if (tipoHabitacion.equalsIgnoreCase("standar") || tipoHabitacion.equalsIgnoreCase("premiun") ) {
 
-        Optional<Habitacion> habitacion1= Optional.ofNullable(this.habitacionImple.create(habitacion));
-         if (tipoHabitacion=="Standar"&& habitacion1.isPresent() || tipoHabitacion=="Premiun" &&habitacion1.isPresent()) {
+            Optional<Habitacion> habitacion1= Optional.ofNullable(this.habitacionImple.create(habitacion));
             return habitacion1.get();
-        }else {
-             throw new HabitacionValidoException("La Habitacion " +habitacion +"no es Standar o Premiun");
+        }else{
+
+            throw new HabitacionValidoException("La Habitacion " +habitacion +"no es standar o premiun");
 
         }
+
+
+
 
 
     }

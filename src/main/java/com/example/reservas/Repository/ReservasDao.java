@@ -10,11 +10,10 @@ import java.util.List;
 
 public interface ReservasDao {
 
-    Reserva create(ReservaDto reserva);
+    Reserva create(ReservaDto reservaDto);
     boolean delete(Integer idReserva);
     List<Reserva> reservaAll();
     Reserva reserva(Integer idReserva);
-
 
     public List<Habitacion> FindbyDateTypeRoom(Date fecha , String TipoHabitacion);
 

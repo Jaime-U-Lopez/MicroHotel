@@ -28,7 +28,8 @@ public class ReservaController {
     @Operation(summary = "En esta opcion podras rellenar los campos a necesidad para las " +
             "siguiente consultas : - Listar todas Reservas (no diligencias campos)" +
             " - Id cliente con reserva ( solo el campo de id cliente ) " +
-            " - Consulta por fecha y por  id cliente" +
+            " - Consulta por fecha y por  id cliente las" +
+            " - Consulta por fecha las habitaciones disponibles " +
             " - Id reserva "
     )
 
@@ -77,8 +78,13 @@ public class ReservaController {
 
     @DeleteMapping("reservas/{idReserva}")
     @Operation(summary = "Elimina Reserva en la base de datos ")
-    public boolean delete(@PathVariable Integer idReserva) {
-        return this.reservaService.delete(idReserva);
+    public ResponseEntity<?> delete(@PathVariable Integer idReserva) {
+
+
+         this.reservaService.delete(idReserva);
+
+         String message =" La reserva "+idReserva+ " se elimino con exito";
+    return ResponseEntity.ok(message);
     }
 
 

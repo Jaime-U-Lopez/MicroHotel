@@ -4,21 +4,18 @@ import java.sql.Date;
 
 public class ReservaDto {
 
-    private Integer id;
+
     private Integer numeroHabitacion;
     private Date FechaReserva;
     private Integer documentoIdentidadCliente;
 
 
-    public ReservaDto( int numero_habitacion, Date fecha, int documento_identidad) {
+    public ReservaDto( int numero_habitacion, Date FechaReserva, int documento_identidad) {
         this.numeroHabitacion= numero_habitacion;
-        this.FechaReserva = fecha;
+        this.FechaReserva = FechaReserva;
         this.documentoIdentidadCliente = documento_identidad;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getNumeroHabitacion() {
         return numeroHabitacion;
