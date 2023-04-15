@@ -32,7 +32,7 @@ public class ReservaController {
             " - Consulta por fecha las habitaciones disponibles " +
             " - Id reserva "
     )
-
+//
     public Object reservas(
             @RequestParam(required = false) @ApiParam(value = "Id cliente con Reserva ", example = "123") Integer clienteReserva,
             @RequestParam(required = false) @ApiParam(value = "Ingresa la fecha a consultar  ", example = "2000-05.22") String fecha,
