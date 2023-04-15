@@ -24,7 +24,7 @@ public class ClienteService implements ClienteServicesMetodos {
     public List<Cliente> createArray(Cliente[] cliente) {
         return clienteImple.createsArray(cliente);
     }
-
+//
     @Override
     public Cliente create(Cliente cliente) throws RuntimeException {
 
