@@ -30,8 +30,6 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-
-
     @ApiResponses(value = {
             @ApiResponse(description = "400 - Bad Request", responseCode = "400"),
             @ApiResponse(description = "200 - Request successful", responseCode = "200"),
@@ -48,8 +46,6 @@ public class ClienteController {
             return ResponseEntity.ok(nuevoCliente);
 
     }
-
-
 
     @ApiResponses(value = {
             @ApiResponse(description = "400 - Bad Request", responseCode = "400"),

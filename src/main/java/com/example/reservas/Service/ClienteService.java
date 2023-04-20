@@ -84,8 +84,6 @@ public class ClienteService implements ClienteServicesMetodos {
     @Override
     public Cliente cliente(Integer idCliente) throws RuntimeException {
 
-
-
         Optional<Cliente> clienteOptional= Optional.ofNullable(this.clienteImple.cliente(idCliente));
         if(!clienteOptional.isPresent()){
             throw new ClienteInvalidoException("El Cliente con cc: " +idCliente+" no existe en la base de datos ");
